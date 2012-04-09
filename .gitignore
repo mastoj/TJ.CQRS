@@ -1,0 +1,58 @@
+# .gitignore for .NET projects
+
+# Thanks to Derick Bailey
+
+# http://www.lostechies.com/blogs/derickbailey/archive/2009/05/18/a-net-c-developer-s-gitignore-file.aspx
+
+# Additional Thanks to 
+
+# - Alexey Abramov
+
+
+# Standard VS.NET and ReSharper Foo
+
+obj
+bin
+*.csproj.user
+*ReSharper*
+*resharper*
+*.suo
+*.cache
+*.docstates
+* Thumbs.db
+
+# Other useful stuff
+*.bak
+*.cache
+*.log
+*.swp
+*.user
+_compareTemp
+_notes
+aspnet_client
+httpd.parse.errors
+
+# Office Temp Files
+~$* 
+
+# If you have a deploy folder
+deploy
+deploy/*
+
+# Ignoring NuGet packages for this project
+**/*.nupkg
+
+_FileCache
+_FileCache/*
+
+.sass-cache
+.sass-cache/*
+
+*.sdf
+
+Uploads
+Uploads/*
+
+# Ignoring ncrunch stuff
+*.ncrunchsolution
+*.ncrunchsolution.user
