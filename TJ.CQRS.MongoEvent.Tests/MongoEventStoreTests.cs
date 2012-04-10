@@ -2,11 +2,9 @@ using System;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using TJ.CQRS.Infrastructure.Event;
-using TJ.CQRS.Infrastructure.Messaging;
-using TJ.CQRS.Infrastructure.Tests;
-using TJ.CQRS.Infrastructure.Tests.Stub;
-using TJ.Mongo.Util;
+using TJ.CQRS.Messaging;
+using TJ.CQRS.MongoEvent;
+using TJ.CQRS.Tests;
 
 namespace NBlog.Data.Mongo.Tests
 {
@@ -26,7 +24,7 @@ namespace NBlog.Data.Mongo.Tests
             {
                 DatabaseName = "EventTestDB"
             };
-            var eventStore = new TJ.CQRS.MongoEvent.MongoEventStore(mongoConfig, _eventPublisher);
+            var eventStore = new MongoEventStore(mongoConfig, _eventPublisher);
             eventStore.DeleteCollection();
             _aggregate = new StubAggregate();
             _aggregate.AggregateId = Guid.NewGuid();
@@ -52,7 +50,7 @@ namespace NBlog.Data.Mongo.Tests
             {
                 DatabaseName = "EventTestDB"
             };
-            var eventStore = new TJ.CQRS.MongoEvent.MongoEventStore(mongoConfig, _eventPublisher);
+            var eventStore = new MongoEventStore(mongoConfig, _eventPublisher);
             var loadedAggregate = eventStore.Get<StubAggregate>(_aggregateId);
             var appliedEvents = loadedAggregate.EventsTriggered;
             appliedEvents.Count.Should().Be(4);

@@ -1,5 +1,5 @@
-﻿using TJ.CQRS.Infrastructure;
-using TJ.CQRS.Infrastructure.Event;
+﻿using TJ.CQRS;
+using TJ.CQRS.Event;
 
 namespace TJ.CQRS.MongoEvent.Tests
 {

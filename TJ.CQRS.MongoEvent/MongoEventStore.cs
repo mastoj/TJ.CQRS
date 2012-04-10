@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using TJ.CQRS.Infrastructure.Event;
-using TJ.CQRS.Infrastructure.Messaging;
-using TJ.Mongo.Util;
-
+using TJ.CQRS.Event;
+using TJ.CQRS.Messaging;
 namespace TJ.CQRS.MongoEvent
 {
     public class MongoEventStore : EventStore

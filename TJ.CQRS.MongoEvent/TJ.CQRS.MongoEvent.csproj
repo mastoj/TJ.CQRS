@@ -12,6 +12,8 @@
     <AssemblyName>TJ.CQRS.MongoEvent</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,29 +46,24 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TJ.CQRS">
+      <HintPath>..\packages\TJ.CQRS.0.1.0.0\lib\net40\TJ.CQRS.dll</HintPath>
+    </Reference>
+    <Reference Include="TJ.Extensions, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TJ.Extensions.0.1.0.0\lib\net40\TJ.Extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMongoConfiguration.cs" />
+    <Compile Include="MongoConfiguration.cs" />
     <Compile Include="MongoEventStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TJ.CQRS.Infrastructure\TJ.CQRS.Infrastructure.csproj">
-      <Project>{164C0B94-A366-42A8-A979-C9B03F14A5D0}</Project>
-      <Name>TJ.CQRS.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TJ.Extensions\TJ.Extensions.csproj">
-      <Project>{3E250570-640C-43D7-9107-3375B36051AE}</Project>
-      <Name>TJ.Extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TJ.Mongo.Util\TJ.Mongo.Util.csproj">
-      <Project>{F687A644-FB6F-4038-9025-75CE192D98CE}</Project>
-      <Name>TJ.Mongo.Util</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

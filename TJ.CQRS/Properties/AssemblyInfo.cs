@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TJ.CQRS.MongoEvent")]
-[assembly: AssemblyDescription("Event store implementation using MongoDB for TJ.CQRS")]
+[assembly: AssemblyTitle("TJ.CQRS")]
+[assembly: AssemblyDescription("A simple CQRS framework")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tomas Jansson")]
-[assembly: AssemblyProduct("TJ.CQRS.MongoEvent")]
+[assembly: AssemblyProduct("TJ.CQRS")]
 [assembly: AssemblyCopyright("Copyright © Tomas Jansson 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5f02542f-9382-41e0-8969-17c55c03b44d")]
+[assembly: Guid("326e4aed-99a4-444e-8dc2-6098875c5f30")]
 
 // Version information for an assembly consists of the following four values:
 //
