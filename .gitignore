@@ -43,6 +43,7 @@ deploy/*
 **/*.nupkg
 packages
 packages/*
+!packages/repositories.config
 
 _FileCache
 _FileCache/*
