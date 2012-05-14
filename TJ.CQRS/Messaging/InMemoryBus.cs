@@ -16,9 +16,7 @@ namespace TJ.CQRS.Messaging
         public InMemoryBus(IMessageRouter messageRouter)
         {
             _messageRouter = messageRouter;
-#if DEBUG
             _publishedEvents = new List<IDomainEvent>();
-#endif
         }
 
         public void Send<TCommand>(TCommand command) where TCommand : class, ICommand
@@ -50,9 +48,7 @@ namespace TJ.CQRS.Messaging
                     eventHandler(@event);
                 }
             }
-#if DEBUG
             _publishedEvents.Add(@event);
-#endif
         }
 
         public void PublishEvents<TEvent>(IEnumerable<TEvent> events) where TEvent : class, IDomainEvent
