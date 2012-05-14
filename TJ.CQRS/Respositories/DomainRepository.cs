@@ -6,7 +6,27 @@ using TJ.CQRS.Event;
 
 namespace TJ.CQRS.Respositories
 {
-    public abstract class DomainRepository<TAggregate> : IDomainRepository<TAggregate> where TAggregate : AggregateRoot, new()
+    public class DomainRepositoryFactory : IDomainRepositoryFactory
+    {
+        private IEventStore _eventStore;
+
+        public DomainRepositoryFactory(IEventStore eventStore)
+        {
+            _eventStore = eventStore;
+        }
+
+        public DomainRepository<TAggregate> GetDomainRepository<TAggregate>() where TAggregate : AggregateRoot, new()
+        {
+            return new DomainRepository<TAggregate>(_eventStore);
+        }
+    }
+
+    public interface IDomainRepositoryFactory
+    {
+        DomainRepository<TAggregate> GetDomainRepository<TAggregate>() where TAggregate : AggregateRoot, new();
+    }
+
+    public class DomainRepository<TAggregate> : IDomainRepository<TAggregate> where TAggregate : AggregateRoot, new()
     {
         private readonly IEventStore _eventStore;
 
