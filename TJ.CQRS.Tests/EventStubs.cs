@@ -1,5 +1,4 @@
-﻿using TJ.CQRS;
-using TJ.CQRS.Event;
+﻿using TJ.CQRS.Event;
 
 namespace TJ.CQRS.MongoEvent.Tests
 {
