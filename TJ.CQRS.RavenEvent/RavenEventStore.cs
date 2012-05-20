@@ -11,7 +11,7 @@ namespace TJ.CQRS.RavenEvent
     {
         private DocumentStore _documentStore;
 
-        public RavenEventStore(IBus bus, RavenConfiguration configuration) : base(bus)
+        public RavenEventStore(IBus commandBus, RavenConfiguration configuration) : base(commandBus)
         {
             _documentStore = new DocumentStore
                                  {

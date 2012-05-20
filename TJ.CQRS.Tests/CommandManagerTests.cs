@@ -12,12 +12,12 @@ namespace TJ.CQRS.Tests
     [TestFixture]
     public class When_Executing_An_Unregistered_Command
     {
-        private InMemoryBus _inMemoryBus;
+        private InMemoryCommandBus _inMemoryBus;
 
         [TestFixtureSetUp]
         public void Setup()
         {
-            _inMemoryBus = new InMemoryBus(new MessageRouter());
+            _inMemoryBus = new InMemoryCommandBus(new MessageRouter());
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace TJ.CQRS.Tests
     [TestFixture]
     public class When_Executing_A_Registered_Command
     {
-        private InMemoryBus _inMemoryBus;
+        private InMemoryCommandBus _inMemoryBus;
         private StubCommandHandler _commandHandler1;
         private StubCommandHandler _commandHandler2;
         private StubCommand _command;
@@ -47,7 +47,7 @@ namespace TJ.CQRS.Tests
             messageRouter.Register<StubCommand>(_commandHandler1.Handle);
             messageRouter.Register<StubCommand>(_commandHandler2.Handle);
             _unitOfWork = new StubUnitOfWork();
-            _inMemoryBus = new InMemoryBus(messageRouter);
+            _inMemoryBus = new InMemoryCommandBus(messageRouter);
             _inMemoryBus.Commit += _unitOfWork.Commit;
             _command = new StubCommand();
             _inMemoryBus.Send(_command);

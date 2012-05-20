@@ -11,7 +11,7 @@ namespace TJ.CQRS.Tests
 {
     public class When_Publishing_An_Event : BaseTestSetup
     {
-        private InMemoryBus _eventBus;
+        private InMemoryCommandBus _eventCommandBus;
         private EventHandler<ValidEvent> _validEventHandler1;
         private EventHandler<ValidEvent> _validEventHandler2;
         private EventHandler<AnotherValidEvent> _anotherValidEventHandler;
@@ -25,9 +25,9 @@ namespace TJ.CQRS.Tests
             messageRouter.Register<ValidEvent>(_validEventHandler1.Handle);
             messageRouter.Register<ValidEvent>(_validEventHandler2.Handle);
             messageRouter.Register<AnotherValidEvent>(_anotherValidEventHandler.Handle);
-            _eventBus = new InMemoryBus(messageRouter);
+            _eventCommandBus = new InMemoryCommandBus(messageRouter);
 
-            _eventBus.PublishEvent(new ValidEvent(Guid.Empty));
+            _eventCommandBus.PublishEvent(new ValidEvent(Guid.Empty));
         }
 
         [Test]

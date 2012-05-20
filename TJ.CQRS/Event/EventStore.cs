@@ -7,16 +7,15 @@ namespace TJ.CQRS.Event
 {
     public abstract class EventStore : IEventStore, IUnitOfWork
     {
-        private readonly IBus _bus;
+        private readonly IEventBus _eventBus;
         private Dictionary<Guid, AggregateRoot> _aggregateDictionary;
 
         protected abstract void InsertBatch(IEnumerable<IDomainEvent> eventBatch);
         protected abstract IEnumerable<IDomainEvent> GetEvents(Guid aggregateId);
 
-        public EventStore(IBus bus)
+        public EventStore(IEventBus eventBus)
         {
-            _bus = bus;
-            _bus.Commit += Commit;
+            _eventBus = eventBus;
             _aggregateDictionary = new Dictionary<Guid, AggregateRoot>();
         }
 
@@ -51,7 +50,7 @@ namespace TJ.CQRS.Event
         {
             var uncommitedEvents = GetUncommitedEvents();
             InsertBatch(uncommitedEvents);
-            _bus.PublishEvents(uncommitedEvents);
+            _eventBus.PublishEvents(uncommitedEvents);
             ClearEvents();
         }
 

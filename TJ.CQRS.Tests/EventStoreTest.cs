@@ -16,7 +16,7 @@ namespace TJ.CQRS.Tests
 
         protected override void Given()
         {
-            IBus stubUnitOfWork = new InMemoryBus(new MessageRouter());
+            ICommandBus stubUnitOfWork = new InMemoryCommandBus(new MessageRouter());
             var eventStore = new StubEventStore(stubUnitOfWork);
             _aggregate = eventStore.Get<StubAggregate>(Guid.Empty);
         }
@@ -32,13 +32,13 @@ namespace TJ.CQRS.Tests
     public class When_Commiting_Changes_On_A_Inserted_Aggregate : EventStoreTestBase
     {
         private StubAggregate _aggregate;
-        private InMemoryBus _stubEventBus;
+        private InMemoryCommandBus _stubEventCommandBus;
         private StubEventStore _eventStore;
 
         protected override void Given()
         {
-            _stubEventBus = new InMemoryBus(new MessageRouter());
-            _eventStore = new StubEventStore(_stubEventBus);
+            _stubEventCommandBus = new InMemoryCommandBus(new MessageRouter());
+            _eventStore = new StubEventStore(_stubEventCommandBus);
             _aggregate = new StubAggregate();
             _aggregate.DoThis();
             _aggregate.DoSomethingElse();
@@ -57,7 +57,7 @@ namespace TJ.CQRS.Tests
         [Test]
         public void The_Uncommited_Events_Should_Be_Published_On_The_Bus_In_The_Right_Order()
         {
-            var publishedEvents = _stubEventBus.PublishedEvents.ToList();
+            var publishedEvents = _stubEventCommandBus.PublishedEvents.ToList();
             CheckEvents(publishedEvents);
         }
 
@@ -76,7 +76,7 @@ namespace TJ.CQRS.Tests
 
         protected override void Given()
         {
-            IBus stubUnitOfWork = new InMemoryBus(new MessageRouter());
+            ICommandBus stubUnitOfWork = new InMemoryCommandBus(new MessageRouter());
             var eventStore = new StubEventStore(stubUnitOfWork);
             var events = new List<IDomainEvent>();
             events.Add(new ValidEvent(Guid.Empty) { EventNumber = 0 });

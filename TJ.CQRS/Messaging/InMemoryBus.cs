@@ -5,17 +5,22 @@ using TJ.Extensions;
 
 namespace TJ.CQRS.Messaging
 {
-    public interface IBus : ISendCommand, IPublishEvent, ICommitMessages
+    public interface ICommandBus : ISendCommand
     { }
 
-    public class InMemoryBus : IBus
+    public interface IEventBus : IPublishEvent
+    {}
+
+    public class InMemoryCommandBus : ICommandBus
     {
         private readonly IMessageRouter _messageRouter;
+        private readonly IUnitOfWork _unitOfWork;
         private List<IDomainEvent> _publishedEvents;
 
-        public InMemoryBus(IMessageRouter messageRouter)
+        public InMemoryCommandBus(IMessageRouter messageRouter, IUnitOfWork unitOfWork)
         {
             _messageRouter = messageRouter;
+            _unitOfWork = unitOfWork;
             _publishedEvents = new List<IDomainEvent>();
         }
 
@@ -29,7 +34,7 @@ namespace TJ.CQRS.Messaging
                 {
                     handler(command);
                 }
-                Commit();
+                _unitOfWork.Commit();
             }
             else
             {
@@ -63,7 +68,5 @@ namespace TJ.CQRS.Messaging
         {
             get { return _publishedEvents; }
         }
-
-        public event CommitMessageHandler Commit = () => { };
     }
 }

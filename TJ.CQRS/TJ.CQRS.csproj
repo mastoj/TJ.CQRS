@@ -49,7 +49,6 @@
     <Compile Include="AggregateRoot.cs" />
     <Compile Include="Messaging\ICommand.cs" />
     <Compile Include="Messaging\Command.cs" />
-    <Compile Include="Messaging\ICommitMessages.cs" />
     <Compile Include="Messaging\IMessageRouter.cs" />
     <Compile Include="Messaging\IPublishEvent.cs" />
     <Compile Include="Messaging\InMemoryBus.cs" />

@@ -11,7 +11,7 @@ namespace TJ.CQRS.Tests.Stub
         private List<IDomainEvent> _insertedEvents;
         private Dictionary<Guid, IEnumerable<IDomainEvent>> _aggregateEventDictionary;
 
-        public StubEventStore(IBus bus) : base(bus)
+        public StubEventStore(ICommandBus eventBus) : base(eventBus)
         {
             _insertedEvents = new List<IDomainEvent>();
         }
