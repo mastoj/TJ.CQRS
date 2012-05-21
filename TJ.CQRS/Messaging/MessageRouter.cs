@@ -4,7 +4,7 @@ using TJ.Extensions;
 
 namespace TJ.CQRS.Messaging
 {
-    public class MessageRouter : IMessageRouter
+    public abstract class MessageRouter : IEventRouter, ICommandRouter
     {
         private Dictionary<Type, List<Action<IMessage>>> _messageRoutes;
 

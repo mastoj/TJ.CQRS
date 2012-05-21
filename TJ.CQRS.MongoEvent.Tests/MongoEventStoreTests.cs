@@ -19,7 +19,7 @@ namespace NBlog.Data.Mongo.Tests
         public void Setup()
         {
             // Arrange
-            _eventPublisher = new InMemoryEventBus(new MessageRouter());
+            _eventPublisher = new InMemoryEventBus(new MessageRouterStub());
             var mongoConfig = new MongoConfiguration()
             {
                 DatabaseName = "EventTestDB"

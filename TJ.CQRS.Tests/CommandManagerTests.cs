@@ -17,7 +17,7 @@ namespace TJ.CQRS.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
-            _inMemoryBus = new InMemoryCommandBus(new MessageRouter(), null);
+            _inMemoryBus = new InMemoryCommandBus(new MessageRouterStub(), null);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace TJ.CQRS.Tests
         {
             _commandHandler1 = new StubCommandHandler();
             _commandHandler2 = new StubCommandHandler();
-            var messageRouter = new MessageRouter();
+            var messageRouter = new MessageRouterStub();
             messageRouter.Register<StubCommand>(_commandHandler1.Handle);
             messageRouter.Register<StubCommand>(_commandHandler2.Handle);
             _unitOfWork = new StubUnitOfWork();
@@ -110,4 +110,6 @@ namespace TJ.CQRS.Tests
 
         }
     }
+
+    public class MessageRouterStub : MessageRouter {}
 }

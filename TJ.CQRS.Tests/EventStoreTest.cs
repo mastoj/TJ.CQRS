@@ -16,7 +16,7 @@ namespace TJ.CQRS.Tests
 
         protected override void Given()
         {
-            var stubUnitOfWork = new InMemoryEventBus(new MessageRouter());
+            var stubUnitOfWork = new InMemoryEventBus(new MessageRouterStub());
             var eventStore = new StubEventStore(stubUnitOfWork);
             _aggregate = eventStore.Get<StubAggregate>(Guid.Empty);
         }
@@ -37,7 +37,7 @@ namespace TJ.CQRS.Tests
 
         protected override void Given()
         {
-            _stubEventBus = new InMemoryEventBus(new MessageRouter());
+            _stubEventBus = new InMemoryEventBus(new MessageRouterStub());
             _eventStore = new StubEventStore(_stubEventBus);
             _aggregate = new StubAggregate();
             _aggregate.DoThis();
@@ -76,7 +76,7 @@ namespace TJ.CQRS.Tests
 
         protected override void Given()
         {
-            var eventBus = new InMemoryEventBus(new MessageRouter());
+            var eventBus = new InMemoryEventBus(new MessageRouterStub());
             var eventStore = new StubEventStore(eventBus);
             var events = new List<IDomainEvent>();
             events.Add(new ValidEvent(Guid.Empty) { EventNumber = 0 });

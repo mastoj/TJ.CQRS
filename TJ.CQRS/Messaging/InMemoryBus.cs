@@ -18,10 +18,10 @@ namespace TJ.CQRS.Messaging
 
     public class InMemoryCommandBus : ICommandBus
     {
-        private readonly IMessageRouter _messageRouter;
+        private readonly ICommandRouter _messageRouter;
         private readonly IUnitOfWork _unitOfWork;
 
-        public InMemoryCommandBus(IMessageRouter messageRouter, IUnitOfWork unitOfWork)
+        public InMemoryCommandBus(ICommandRouter messageRouter, IUnitOfWork unitOfWork)
         {
             _messageRouter = messageRouter;
             _unitOfWork = unitOfWork;
@@ -48,10 +48,10 @@ namespace TJ.CQRS.Messaging
 
     public class InMemoryEventBus : IEventBus
     {
-        private readonly IMessageRouter _messageRouter;
+        private readonly IEventRouter _messageRouter;
         private List<IDomainEvent> _publishedEvents;
 
-        public InMemoryEventBus(IMessageRouter messageRouter)
+        public InMemoryEventBus(IEventRouter messageRouter)
         {
             _messageRouter = messageRouter;
             _publishedEvents = new List<IDomainEvent>();

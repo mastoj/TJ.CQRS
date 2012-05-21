@@ -5,7 +5,7 @@ using TJ.CQRS.Messaging;
 
 namespace TJ.CQRS.Event
 {
-    public abstract class EventStore : IEventStore, IUnitOfWork
+    public abstract class EventStore : IEventStore
     {
         private readonly IEventBus _eventBus;
         private Dictionary<Guid, AggregateRoot> _aggregateDictionary;
@@ -16,7 +16,7 @@ namespace TJ.CQRS.Event
         public EventStore(IEventBus eventBus)
         {
             _eventBus = eventBus;
-            _aggregateDictionary = new Dictionary<Guid, AggregateRoot>();
+          _aggregateDictionary = new Dictionary<Guid, AggregateRoot>();
         }
 
         public T Get<T>(Guid aggregateId) where T : AggregateRoot, new()

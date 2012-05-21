@@ -21,7 +21,7 @@ namespace TJ.CQRS.Tests
             _validEventHandler1 = new EventHandler<ValidEvent>();
             _validEventHandler2 = new EventHandler<ValidEvent>();
             _anotherValidEventHandler = new EventHandler<AnotherValidEvent>();
-            var messageRouter = new MessageRouter();
+            var messageRouter = new MessageRouterStub();
             messageRouter.Register<ValidEvent>(_validEventHandler1.Handle);
             messageRouter.Register<ValidEvent>(_validEventHandler2.Handle);
             messageRouter.Register<AnotherValidEvent>(_anotherValidEventHandler.Handle);

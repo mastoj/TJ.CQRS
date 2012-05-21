@@ -21,7 +21,7 @@ namespace TJ.CQRS.RavenEvent.Tests
         public void Setup()
         {
             // Arrange
-            _eventPublisher = new InMemoryEventBus(new MessageRouter());
+            _eventPublisher = new InMemoryEventBus(new MessageRouterStub());
             RavenConfiguration configuration = new RavenConfiguration()
                                                    {
                                                        Url = "http://localhost:8090/"

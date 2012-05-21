@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateRoot.cs" />
+    <Compile Include="Event\UnitOfWork.cs" />
     <Compile Include="Messaging\ICommand.cs" />
     <Compile Include="Messaging\Command.cs" />
     <Compile Include="Messaging\IMessageRouter.cs" />
