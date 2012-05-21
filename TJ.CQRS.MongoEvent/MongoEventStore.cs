@@ -12,8 +12,8 @@ namespace TJ.CQRS.MongoEvent
         private MongoServer _server;
         private string _collectionName = "Events";
 
-        public MongoEventStore(IMongoConfiguration mongoConfiguration, IBus commandBus)
-            : base(commandBus)
+        public MongoEventStore(IMongoConfiguration mongoConfiguration, IEventBus eventBus)
+            : base(eventBus)
         {
             _server = MongoServer.Create(mongoConfiguration.Url);
             var mongoDatabaseSettings = _server.CreateDatabaseSettings(mongoConfiguration.DatabaseName);

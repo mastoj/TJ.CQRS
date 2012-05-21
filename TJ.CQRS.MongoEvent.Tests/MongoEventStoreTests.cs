@@ -13,13 +13,13 @@ namespace NBlog.Data.Mongo.Tests
     {
         private Guid _aggregateId;
         private StubAggregate _aggregate;
-        private ICommandBus _eventPublisher;
+        private IEventBus _eventPublisher;
 
         [TestFixtureSetUp]
         public void Setup()
         {
             // Arrange
-            _eventPublisher = new InMemoryCommandBus(new MessageRouter());
+            _eventPublisher = new InMemoryEventBus(new MessageRouter());
             var mongoConfig = new MongoConfiguration()
             {
                 DatabaseName = "EventTestDB"

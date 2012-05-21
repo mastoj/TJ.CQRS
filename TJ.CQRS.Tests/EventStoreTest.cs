@@ -16,7 +16,7 @@ namespace TJ.CQRS.Tests
 
         protected override void Given()
         {
-            ICommandBus stubUnitOfWork = new InMemoryCommandBus(new MessageRouter());
+            var stubUnitOfWork = new InMemoryEventBus(new MessageRouter());
             var eventStore = new StubEventStore(stubUnitOfWork);
             _aggregate = eventStore.Get<StubAggregate>(Guid.Empty);
         }
@@ -32,13 +32,13 @@ namespace TJ.CQRS.Tests
     public class When_Commiting_Changes_On_A_Inserted_Aggregate : EventStoreTestBase
     {
         private StubAggregate _aggregate;
-        private InMemoryCommandBus _stubEventCommandBus;
+        private InMemoryEventBus _stubEventBus;
         private StubEventStore _eventStore;
 
         protected override void Given()
         {
-            _stubEventCommandBus = new InMemoryCommandBus(new MessageRouter());
-            _eventStore = new StubEventStore(_stubEventCommandBus);
+            _stubEventBus = new InMemoryEventBus(new MessageRouter());
+            _eventStore = new StubEventStore(_stubEventBus);
             _aggregate = new StubAggregate();
             _aggregate.DoThis();
             _aggregate.DoSomethingElse();
@@ -57,7 +57,7 @@ namespace TJ.CQRS.Tests
         [Test]
         public void The_Uncommited_Events_Should_Be_Published_On_The_Bus_In_The_Right_Order()
         {
-            var publishedEvents = _stubEventCommandBus.PublishedEvents.ToList();
+            var publishedEvents = _stubEventBus.PublishedEvents.ToList();
             CheckEvents(publishedEvents);
         }
 
@@ -76,8 +76,8 @@ namespace TJ.CQRS.Tests
 
         protected override void Given()
         {
-            ICommandBus stubUnitOfWork = new InMemoryCommandBus(new MessageRouter());
-            var eventStore = new StubEventStore(stubUnitOfWork);
+            var eventBus = new InMemoryEventBus(new MessageRouter());
+            var eventStore = new StubEventStore(eventBus);
             var events = new List<IDomainEvent>();
             events.Add(new ValidEvent(Guid.Empty) { EventNumber = 0 });
             events.Add(new AnotherValidEvent(Guid.Empty) { EventNumber = 1 });

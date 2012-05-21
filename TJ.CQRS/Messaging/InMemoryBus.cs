@@ -5,23 +5,26 @@ using TJ.Extensions;
 
 namespace TJ.CQRS.Messaging
 {
-    public interface ICommandBus : ISendCommand
-    { }
+    public interface ICommandBus
+    {
+        void Send<TCommand>(TCommand command) where TCommand : class, ICommand;
+    }
 
-    public interface IEventBus : IPublishEvent
-    {}
+    public interface IEventBus
+    {
+        void PublishEvent<TEvent>(TEvent @event) where TEvent : class, IDomainEvent;
+        void PublishEvents<TEvent>(IEnumerable<TEvent> events) where TEvent : class, IDomainEvent;
+    }
 
     public class InMemoryCommandBus : ICommandBus
     {
         private readonly IMessageRouter _messageRouter;
         private readonly IUnitOfWork _unitOfWork;
-        private List<IDomainEvent> _publishedEvents;
 
         public InMemoryCommandBus(IMessageRouter messageRouter, IUnitOfWork unitOfWork)
         {
             _messageRouter = messageRouter;
             _unitOfWork = unitOfWork;
-            _publishedEvents = new List<IDomainEvent>();
         }
 
         public void Send<TCommand>(TCommand command) where TCommand : class, ICommand
@@ -40,6 +43,18 @@ namespace TJ.CQRS.Messaging
             {
                 throw new UnregisteredCommandException("No command handler registered for command type: " + commandType);
             }
+        }
+    }
+
+    public class InMemoryEventBus : IEventBus
+    {
+        private readonly IMessageRouter _messageRouter;
+        private List<IDomainEvent> _publishedEvents;
+
+        public InMemoryEventBus(IMessageRouter messageRouter)
+        {
+            _messageRouter = messageRouter;
+            _publishedEvents = new List<IDomainEvent>();
         }
 
         public void PublishEvent<TEvent>(TEvent @event) where TEvent : class, IDomainEvent

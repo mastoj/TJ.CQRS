@@ -50,9 +50,7 @@
     <Compile Include="Messaging\ICommand.cs" />
     <Compile Include="Messaging\Command.cs" />
     <Compile Include="Messaging\IMessageRouter.cs" />
-    <Compile Include="Messaging\IPublishEvent.cs" />
     <Compile Include="Messaging\InMemoryBus.cs" />
-    <Compile Include="Messaging\ISendCommand.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Event\DomainEventBase.cs" />
     <Compile Include="Event\EventStore.cs" />
