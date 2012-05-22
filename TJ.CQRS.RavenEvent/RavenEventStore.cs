@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Raven.Abstractions.Data;
 using Raven.Client.Document;
 using TJ.CQRS.Event;
 using TJ.CQRS.Messaging;
@@ -11,11 +12,19 @@ namespace TJ.CQRS.RavenEvent
     {
         private DocumentStore _documentStore;
 
-        public RavenEventStore(IEventBus eventBus, RavenConfiguration configuration) : base(eventBus)
+        public RavenEventStore(IEventBus eventBus, string connectionStringName) : base(eventBus)
         {
+//            var parser = ConnectionStringParser<RavenConnectionStringOptions>.FromConnectionString(connectionString);
+//            parser.Parse();
             _documentStore = new DocumentStore
                                  {
-                                     Url = configuration.Url
+                                     ConnectionStringName = connectionStringName
+                                     //Url = parser.ConnectionStringOptions.Url,
+                                     //ApiKey = parser.ConnectionStringOptions.ApiKey,
+                                     //Credentials = parser.ConnectionStringOptions.Credentials,
+                                     //DefaultDatabase = parser.ConnectionStringOptions.DefaultDatabase,
+                                     //ResourceManagerId = parser.ConnectionStringOptions.ResourceManagerId,
+                                     //EnlistInDistributedTransactions = parser.ConnectionStringOptions.EnlistInDistributedTransactions
                                  };
             _documentStore.Initialize();
         }
@@ -57,7 +66,7 @@ namespace TJ.CQRS.RavenEvent
         {
             using (var session = _documentStore.OpenSession())
             {
-                var events = session.Query<RavenEventEntity>();
+                var events = session.Load<RavenEventEntity>();;
                 foreach (var ravenEventEntity in events)
                 {
                     session.Delete(ravenEventEntity);                    

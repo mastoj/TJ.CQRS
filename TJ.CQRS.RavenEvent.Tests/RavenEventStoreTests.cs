@@ -22,11 +22,7 @@ namespace TJ.CQRS.RavenEvent.Tests
         {
             // Arrange
             _eventPublisher = new InMemoryEventBus(new MessageRouterStub());
-            RavenConfiguration configuration = new RavenConfiguration()
-                                                   {
-                                                       Url = "http://localhost:8090/"
-                                                   };
-            var eventStore = new RavenEventStore(_eventPublisher, configuration);
+            var eventStore = new RavenEventStore(_eventPublisher, "RavenDB");
             eventStore.DeleteCollection();
             _aggregate = new StubAggregate();
             _aggregate.AggregateId = Guid.NewGuid();
@@ -48,11 +44,7 @@ namespace TJ.CQRS.RavenEvent.Tests
         [Test]
         public void And_All_Events_Should_Be_Applied_When_Loading_From_EventStore_In_The_Right_Order()
         {
-            RavenConfiguration configuration = new RavenConfiguration()
-            {
-                Url = "http://localhost:8090/"
-            };
-            var eventStore = new RavenEventStore(_eventPublisher, configuration);
+            var eventStore = new RavenEventStore(_eventPublisher, "RavenDB");
             var loadedAggregate = eventStore.Get<StubAggregate>(_aggregateId);
             var appliedEvents = loadedAggregate.EventsTriggered;
             appliedEvents.Count.Should().Be(4);

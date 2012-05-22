@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="RavenEventEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RavenConfiguration.cs" />
     <Compile Include="RavenEventStore.cs" />
   </ItemGroup>
   <ItemGroup>
