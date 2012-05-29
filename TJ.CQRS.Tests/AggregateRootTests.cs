@@ -98,18 +98,26 @@ namespace TJ.CQRS.Tests
 
     public class ValidEvent : DomainEventBase
     {
+        private static int propCount = 0;
         public ValidEvent(Guid aggregateId)
         {
             AggregateId = aggregateId;
+            AProp = propCount++;
         }
+
+        public int AProp { get; set; }
     }
 
     public class AnotherValidEvent : DomainEventBase
     {
+        private static int propCount2 = 20;
         public AnotherValidEvent(Guid aggregateId)
         {
             AggregateId = aggregateId;
+            BProp = propCount2++;
         }
+
+        public int BProp { get; set; }
     }
 
     public class ShouldNotEvent : DomainEventBase
