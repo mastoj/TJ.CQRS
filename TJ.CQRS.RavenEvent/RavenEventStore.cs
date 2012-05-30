@@ -59,8 +59,8 @@ namespace TJ.CQRS.RavenEvent
                         session.Store(domainEvent);
                     }
                     session.SaveChanges();
+                    transaction.Complete();
                 }
-                transaction.Complete();
             }
         }
 
