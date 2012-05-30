@@ -11,6 +11,33 @@ using TJ.CQRS.Tests;
 namespace TJ.CQRS.RavenEvent.Tests
 {
     [TestFixture]
+    public class ShouldNotFailTests
+    {
+        [Test]
+        public void ShouldNotFail()
+        {
+            var id = Guid.NewGuid();
+            var eventPublisher = new InMemoryEventBus(new MessageRouterStub());
+            var eventStore = new RavenEventStore(eventPublisher, "RavenDB");
+            eventStore.DeleteCollection();
+            var events = new List<IDomainEvent>
+                             {
+                                 new ValidEvent(id),
+                                 new AnotherValidEvent(id),
+                                 new ValidEvent(id),
+                                 new AnotherValidEvent(id)
+                             };
+            eventStore.InsertBatchTest(events);
+            var eventsFromStore = eventStore.GetEventsTest(id);
+            foreach (var domainEvent in eventsFromStore)
+            {
+                events.Should().Contain(domainEvent);
+            }
+            
+        }
+    }
+
+    [TestFixture]
     public class RavenEventStoreTests
     {
         private Guid _aggregateId;

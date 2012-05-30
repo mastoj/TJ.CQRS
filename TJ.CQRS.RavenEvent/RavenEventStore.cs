@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+using Raven.Abstractions.Commands;
 using Raven.Abstractions.Data;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Json.Linq;
 using TJ.CQRS.Event;
 using TJ.CQRS.Messaging;
 
@@ -23,7 +25,8 @@ namespace TJ.CQRS.RavenEvent
     {
         private DocumentStore _documentStore;
 
-        public RavenEventStore(IEventBus eventBus, string connectionStringName) : base(eventBus)
+        public RavenEventStore(IEventBus eventBus, string connectionStringName)
+            : base(eventBus)
         {
             var parser = ConnectionStringParser<RavenConnectionStringOptions>.FromConnectionStringName(connectionStringName);
             parser.Parse();
@@ -35,7 +38,7 @@ namespace TJ.CQRS.RavenEvent
                                          {
                                              FindTypeTagName = type =>
                                                        {
-                                                           if(typeof(IDomainEvent).IsAssignableFrom(type))
+                                                           if (typeof(IDomainEvent).IsAssignableFrom(type))
                                                            {
                                                                return "Events";
                                                            }
@@ -47,25 +50,32 @@ namespace TJ.CQRS.RavenEvent
             IndexCreation.CreateIndexes(typeof(Events_ByAggregateId).Assembly, _documentStore);
         }
 
+        internal void InsertBatchTest(IEnumerable<IDomainEvent> eventBatch)
+        {
+            InsertBatch(eventBatch);
+        }
+
         protected override void InsertBatch(IEnumerable<IDomainEvent> eventBatch)
         {
-            using(var session = _documentStore.OpenSession())
+            using (var session = _documentStore.OpenSession())
             {
-                using (var transaction = new TransactionScope())
+                foreach (var domainEvent in eventBatch)
                 {
-                    foreach (var domainEvent in eventBatch)
-                    {
-                        session.Store(domainEvent);
-                    }
-                    session.SaveChanges();
-                    transaction.Complete();
+                    var item = domainEvent;
+                    session.Store(item);
                 }
+                session.SaveChanges();
             }
+        }
+
+        internal IEnumerable<IDomainEvent> GetEventsTest(Guid aggregateId)
+        {
+            return GetEvents(aggregateId);
         }
 
         protected override IEnumerable<IDomainEvent> GetEvents(Guid aggregateId)
         {
-            using(var session = _documentStore.OpenSession())
+            using (var session = _documentStore.OpenSession())
             {
                 var events = session.Query<IDomainEvent>().Where(y => y.AggregateId == aggregateId);
                 return events;

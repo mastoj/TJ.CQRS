@@ -106,6 +106,19 @@ namespace TJ.CQRS.Tests
         }
 
         public int AProp { get; set; }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            var otherObj = obj as ValidEvent;
+            if (otherObj == null) return false;
+            return AggregateId == otherObj.AggregateId && AProp == otherObj.AProp;
+        }
+
+        public override int GetHashCode()
+        {
+            return AggregateId.GetHashCode() * 27 + EventNumber.GetHashCode();
+        }
     }
 
     public class AnotherValidEvent : DomainEventBase
@@ -118,6 +131,19 @@ namespace TJ.CQRS.Tests
         }
 
         public int BProp { get; set; }
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            var otherObj = obj as AnotherValidEvent;
+            if (otherObj == null) return false;
+            return AggregateId == otherObj.AggregateId && BProp == otherObj.BProp;
+        }
+
+        public override int GetHashCode()
+        {
+            return AggregateId.GetHashCode()*27 + EventNumber.GetHashCode();
+        }
+
     }
 
     public class ShouldNotEvent : DomainEventBase
