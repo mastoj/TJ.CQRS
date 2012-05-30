@@ -57,14 +57,18 @@ namespace TJ.CQRS.RavenEvent
 
         protected override void InsertBatch(IEnumerable<IDomainEvent> eventBatch)
         {
-            using (var session = _documentStore.OpenSession())
+            using (var transaction = new TransactionScope())
             {
-                foreach (var domainEvent in eventBatch)
+                using (var session = _documentStore.OpenSession())
                 {
-                    var item = domainEvent;
-                    session.Store(item);
+                    foreach (var domainEvent in eventBatch)
+                    {
+                        var item = domainEvent;
+                        session.Store(item);
+                    }
+                    session.SaveChanges();
+                    transaction.Complete();
                 }
-                session.SaveChanges();
             }
         }
 
