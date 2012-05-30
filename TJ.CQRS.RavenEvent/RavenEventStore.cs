@@ -23,7 +23,8 @@ namespace TJ.CQRS.RavenEvent
     {
         private DocumentStore _documentStore;
 
-        public RavenEventStore(IEventBus eventBus, string connectionStringName) : base(eventBus)
+        public RavenEventStore(IEventBus eventBus, string connectionStringName)
+            : base(eventBus)
         {
             var parser = ConnectionStringParser<RavenConnectionStringOptions>.FromConnectionStringName(connectionStringName);
             parser.Parse();
@@ -35,7 +36,7 @@ namespace TJ.CQRS.RavenEvent
                                          {
                                              FindTypeTagName = type =>
                                                        {
-                                                           if(typeof(IDomainEvent).IsAssignableFrom(type))
+                                                           if (typeof(IDomainEvent).IsAssignableFrom(type))
                                                            {
                                                                return "Events";
                                                            }
@@ -49,23 +50,23 @@ namespace TJ.CQRS.RavenEvent
 
         protected override void InsertBatch(IEnumerable<IDomainEvent> eventBatch)
         {
-            using(var session = _documentStore.OpenSession())
+            using (var transaction = new TransactionScope())
             {
-                using (var transaction = new TransactionScope())
+                using (var session = _documentStore.OpenSession())
                 {
-                    foreach (var domainEvent in eventBatch)
+                        foreach (var domainEvent in eventBatch)
                     {
                         session.Store(domainEvent);
                     }
                     session.SaveChanges();
-                    transaction.Complete();
                 }
+                transaction.Complete();
             }
         }
 
         protected override IEnumerable<IDomainEvent> GetEvents(Guid aggregateId)
         {
-            using(var session = _documentStore.OpenSession())
+            using (var session = _documentStore.OpenSession())
             {
                 var events = session.Query<IDomainEvent>().Where(y => y.AggregateId == aggregateId);
                 return events;
