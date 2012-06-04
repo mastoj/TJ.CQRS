@@ -36,7 +36,10 @@ namespace TJ.CQRS.Event
         {
             unchecked
             {
-                return AggregateId.GetHashCode();
+                int hash = 17;
+                hash = hash*23 + AggregateId.GetHashCode();
+                hash = hash*23 + EventNumber.GetHashCode();
+                return hash;
             }
         }
     }

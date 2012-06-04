@@ -61,7 +61,7 @@ namespace TJ.CQRS.Tests
     {
         private List<IDomainEvent> _eventsTriggered;
 
-        public List<IDomainEvent> EventsTriggered { get { return _eventsTriggered; } } 
+        public List<IDomainEvent> EventsTriggered { get { return _eventsTriggered; } }
 
         public StubAggregate()
         {
@@ -106,6 +106,18 @@ namespace TJ.CQRS.Tests
         }
 
         public int AProp { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var otherObj = obj as ValidEvent;
+            if (otherObj == null) return false;
+            return AggregateId == otherObj.AggregateId && AProp == otherObj.AProp;
+        }
+
+        public override int GetHashCode()
+        {
+            return AggregateId.GetHashCode() * 27 + EventNumber.GetHashCode();
+        }
     }
 
     public class AnotherValidEvent : DomainEventBase
@@ -118,6 +130,18 @@ namespace TJ.CQRS.Tests
         }
 
         public int BProp { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var otherObj = obj as AnotherValidEvent;
+            if (otherObj == null) return false;
+            return AggregateId == otherObj.AggregateId && BProp == otherObj.BProp;
+        }
+
+        public override int GetHashCode()
+        {
+            return AggregateId.GetHashCode() * 27 + EventNumber.GetHashCode();
+        }
     }
 
     public class ShouldNotEvent : DomainEventBase

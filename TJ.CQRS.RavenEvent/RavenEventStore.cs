@@ -54,9 +54,10 @@ namespace TJ.CQRS.RavenEvent
             {
                 using (var session = _documentStore.OpenSession())
                 {
-                        foreach (var domainEvent in eventBatch)
+                    foreach (var domainEvent in eventBatch)
                     {
-                        session.Store(domainEvent);
+                        var item = domainEvent;
+                        session.Store(item);
                     }
                     session.SaveChanges();
                     transaction.Complete();
