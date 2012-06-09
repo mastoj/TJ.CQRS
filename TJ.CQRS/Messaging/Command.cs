@@ -4,7 +4,7 @@ namespace TJ.CQRS.Messaging
 {
     public class Command : ICommand
     {
-        public Guid AggregateId { get; private set; }
+        public Guid AggregateId { get; set; }
 
         public Command(Guid aggregateId)
         {
