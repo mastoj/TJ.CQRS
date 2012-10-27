@@ -12,6 +12,7 @@ namespace TJ.CQRS.Event
 
         protected abstract void InsertBatch(IEnumerable<IDomainEvent> eventBatch);
         protected abstract IEnumerable<IDomainEvent> GetEvents(Guid aggregateId);
+        public abstract IEnumerable<IDomainEvent> GetAllEvents();
 
         public EventStore(IEventBus eventBus)
         {

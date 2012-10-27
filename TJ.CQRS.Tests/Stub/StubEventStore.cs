@@ -31,6 +31,11 @@ namespace TJ.CQRS.Tests.Stub
             return _insertedEvents.Where(y => y.AggregateId == aggregateId);
         }
 
+        public override IEnumerable<IDomainEvent> GetAllEvents()
+        {
+            return _insertedEvents;
+        }
+
         public void InsertEvents(IEnumerable<IDomainEvent> eventBatch)
         {
             _insertedEvents.AddRange(eventBatch);

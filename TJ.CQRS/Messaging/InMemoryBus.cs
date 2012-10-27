@@ -49,12 +49,20 @@ namespace TJ.CQRS.Messaging
     public class InMemoryEventBus : IEventBus
     {
         private readonly IEventRouter _messageRouter;
-        private List<IDomainEvent> _publishedEvents;
+        public Action<IDomainEvent> _eventPublished;
+        public Action<IDomainEvent> EventPublished
+        {
+            get
+            {
+                _eventPublished = _eventPublished ?? ((y) => { });
+                return _eventPublished;
+            }
+            set { _eventPublished = value; }
+        }
 
         public InMemoryEventBus(IEventRouter messageRouter)
         {
             _messageRouter = messageRouter;
-            _publishedEvents = new List<IDomainEvent>();
         }
 
         public void PublishEvent<TEvent>(TEvent @event) where TEvent : class, IDomainEvent
@@ -68,7 +76,7 @@ namespace TJ.CQRS.Messaging
                     eventHandler(@event);
                 }
             }
-            _publishedEvents.Add(@event);
+            EventPublished(@event);
         }
 
         public void PublishEvents<TEvent>(IEnumerable<TEvent> events) where TEvent : class, IDomainEvent
@@ -77,11 +85,6 @@ namespace TJ.CQRS.Messaging
             {
                 PublishEvent(@event);
             }
-        }
-
-        public List<IDomainEvent> PublishedEvents
-        {
-            get { return _publishedEvents; }
         }
     }
 }

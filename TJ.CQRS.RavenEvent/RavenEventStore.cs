@@ -86,6 +86,15 @@ namespace TJ.CQRS.RavenEvent
             }
         }
 
+        public override IEnumerable<IDomainEvent> GetAllEvents()
+        {
+            using (var session = _documentStore.OpenSession())
+            {
+                var events = session.Query<IDomainEvent>().ToArray();
+                return events;
+            }
+        }
+
         internal void DeleteCollection()
         {
             using (var session = _documentStore.OpenSession())

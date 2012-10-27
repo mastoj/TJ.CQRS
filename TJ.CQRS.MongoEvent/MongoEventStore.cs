@@ -31,6 +31,11 @@ namespace TJ.CQRS.MongoEvent
             }
         }
 
+        public override IEnumerable<IDomainEvent> GetAllEvents()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void InsertBatch(IEnumerable<IDomainEvent> eventBatch)
         {
             MongoCollection<IDomainEvent> events = _database.GetCollection<IDomainEvent>(_collectionName);

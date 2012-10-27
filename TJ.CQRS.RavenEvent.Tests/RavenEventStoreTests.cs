@@ -71,17 +71,35 @@ namespace TJ.CQRS.RavenEvent.Tests
         [Test]
         public void And_All_Events_Should_Be_Applied_When_Loading_From_EventStore_In_The_Right_Order()
         {
+            Func<RavenEventStore, IEnumerable<IDomainEvent>> getEventsFunc =
+                (y) =>
+                    {
+                        var loadedAggregate = y.Get<StubAggregate>(_aggregateId);
+                        var appliedEvents = loadedAggregate.EventsTriggered;
+                        return appliedEvents;
+                    };
+            VerifyEvents(getEventsFunc);
+        }
+
+        [Test]
+        public void And_I_Should_Be_Able_To_Get_All_Events()
+        {
+            Func<RavenEventStore, IEnumerable<IDomainEvent>> getEventsFunc = (y) => y.GetAllEvents();
+            VerifyEvents(getEventsFunc);
+        }
+
+        private void VerifyEvents(Func<RavenEventStore, IEnumerable<IDomainEvent>> getEventsFunc)
+        {
             var eventStore = new RavenEventStore(_eventPublisher, "RavenDB");
-            var loadedAggregate = eventStore.Get<StubAggregate>(_aggregateId);
-            var appliedEvents = loadedAggregate.EventsTriggered;
-            appliedEvents.Count.Should().Be(4);
-            for (int i = 0; i < appliedEvents.Count; i++)
+            var @events = getEventsFunc(eventStore).ToList();
+            @events.Count.Should().Be(4);
+            for (int i = 0; i < @events.Count; i++)
             {
-                appliedEvents[i].EventNumber.Should().Be(i);
+                @events[i].EventNumber.Should().Be(i);
                 if (i % 2 == 0)
-                    appliedEvents[i].GetType().Should().Be(typeof(ValidEvent));
+                    @events[i].GetType().Should().Be(typeof(ValidEvent));
                 else
-                    appliedEvents[i].GetType().Should().Be(typeof(AnotherValidEvent));
+                    @events[i].GetType().Should().Be(typeof(AnotherValidEvent));
             }
         }
     }
