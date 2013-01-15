@@ -81,7 +81,7 @@ namespace TJ.CQRS.RavenEvent
         {
             using (var session = _documentStore.OpenSession())
             {
-                var events = session.Query<IDomainEvent>().Where(y => y.AggregateId == aggregateId);
+                var events = session.Query<IDomainEvent>("Events/ByAggregateId").Where(y => y.AggregateId == aggregateId);
                 return events;
             }
         }
@@ -90,7 +90,7 @@ namespace TJ.CQRS.RavenEvent
         {
             using (var session = _documentStore.OpenSession())
             {
-                var events = session.Query<IDomainEvent>().ToArray();
+                var events = session.Query<IDomainEvent>("Events/ByAggregateId").ToArray();
                 return events;
             }
         }

@@ -61,10 +61,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TJ.CQRS.MongoEvent\TJ.CQRS.MongoEvent.csproj">
-      <Project>{1B7FEE73-5097-457A-A05A-73C478F4A620}</Project>
-      <Name>TJ.CQRS.MongoEvent</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TJ.CQRS.Tests\TJ.CQRS.Tests.csproj">
       <Project>{E7D7BB98-832F-4215-AF2E-80904ACDD4A1}</Project>
       <Name>TJ.CQRS.Tests</Name>
